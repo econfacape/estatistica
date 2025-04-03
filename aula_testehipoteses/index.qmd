@@ -1,0 +1,111 @@
+---
+title: "Testes de Hipóteses"
+subtitle: "<br><br>Estatística"
+author: "<br>João Ricardo F. de Lima <br> <br> 03 de Abril de 2025."
+format: 
+  revealjs:
+    logo: "imgs/logofacape.png"
+    width: 1600
+    height: 900
+    slide-number: false
+    theme: serif
+    css: estilos.css
+    transition: fade
+    toc: false
+    progress: true
+---
+
+## Teste de Hipóteses para uma única amostra
+
+<br> <br>
+
+- Muitos problemas requerem que decidamos qual de duas afirmações competitivas acerca do valor de um parametro é verdadeira;
+- As afirmações são chamadas **hipóteses** e o procedimento de tomada de decisão sobre a hipótese é chamado de **teste de hipóteses**;
+- Em muitos casos se está interessado em comparar a média de uma população com certo valor especificado e para isto se faz teste de hipóteses estatísticas;
+
+
+::: {.callout-note title="Hipótese Estatística"}
+Uma **hipótese estatística** é uma afirmação sobre os parâmetros de uma ou mais populações;
+:::
+
+## Teste de Hipóteses para uma única amostra
+
+<br>
+
+- Uma hipótese estatística pode ser pensada como uma afirmação acerca da distribuição de probabilidades de uma variável aleatória;
+
+- Por exemplo, considere que um vendedor de notebook afirma que o tempo de vida de uma bateria é, em média, 240 minutos. Especificamente, estamos querendo saber se a duração é ou não é de 240 minutos. Isto pode ser expresso da seguinte forma:
+
+$$
+H_0:\mu=240 \text{ minutos}
+$$
+
+$$
+H_1:\mu \ne 240 \text{ minutos}
+$$
+
+
+## Teste de Hipóteses para uma única amostra
+
+<br>
+
+- A afirmação $H_0:\mu=240$ minutos é chamada de **hipótese nula** e a $H_1:\mu \neq 240$ minutos é chamada de **hipótese alternativa**;
+
+- Como a $H_1$ especifica valores maiores ou menores do que 240, é chamada de **hipótese alternativa bilateral**;
+
+- Entretanto, é possível, a depender do que se deseja estudar, formular **hipótese alternativa unilateral**:
+
+$$
+H_0:\mu=240 \text{ minutos}  \qquad \qquad \qquad H_0:\mu=240 \text{ minutos}
+$$
+
+$$
+H_1:\mu < 240 \text{ minutos} \qquad \qquad \qquad H_1:\mu > 240 \text{ minutos}
+$$
+
+## Teste de Hipóteses para uma única amostra
+
+<br>
+
+- Para ilustrar, suponha o exemplo da bateria do computador:
+
+$$
+H_0:\mu=240 \text{ minutos}
+$$
+
+$$
+H_1:\mu \ne 240 \text{ minutos}
+$$
+
+- Suponha que uma amostra de $n=20$ computadores sejam testados e que se tenha uma média amostral $\bar{x}$ observada, sendo uma estimativa da média verdadeira $\mu$ da população;
+
+- Se $\bar{x}$ for um valor próximo de 240 é uma evidência de que $\mu=240$ minutos. Por outro lado, se o valor ficar distante é um sinal que não se pode rejeitar $H_1:\mu \ne 240$ minutos;
+
+## Teste de Hipóteses para uma única amostra
+
+<br>
+
+- Suponha que estejamos avaliando a média da bateria: $H_0: \mu = 240$.
+
+- Definimos a região de não rejeição como o intervalo de valores em que **não rejeitamos** a hipótese nula.
+
+- Por exemplo, **se a média amostral** $\bar{x}$ estiver entre 220 e 260 minutos, **não rejeitamos** $H_0$.
+
+- Porém, se $\bar{x} < 220$ ou $\bar{x} > 260$, **rejeitamos** $H_0$.
+
+- Os valores $\bar{x} < 220$ ou $\bar{x} > 260$ formam a **região crítica** ou **região de rejeição** da hipótese nula.
+
+- Os valores entre 220 e 260 constituem a **região de não rejeição** da hipótese nula.
+
+- Os limites **220** e **260** são chamados de **valores críticos** do teste.
+
+## Exemplo: Auditoria da média de reembolso de despesas
+
+- Contexto:
+
+Uma empresa possui uma política interna que permite um reembolso médio de $R\$$ 500,00 por mês para seus representantes comerciais. O setor de auditoria desconfia que os gastos estão acima desse valor.
+
+Foi coletada uma amostra aleatória de 25 reembolsos recentes, e a média observada foi de $R\$$ 520,00, com um desvio padrão populacional de $R\$$ 40,00.
+
+Verificar, ao nível de significância de 5%, se há evidência de que o valor médio de reembolso excede $R\$$ 500,00.
+
