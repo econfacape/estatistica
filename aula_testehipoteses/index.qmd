@@ -1,7 +1,7 @@
 ---
 title: "Testes de Hipóteses"
 subtitle: "<br><br>Estatística"
-author: "<br>João Ricardo F. de Lima <br> <br> 03 de Abril de 2025."
+author: "<br>João Ricardo F. de Lima <br> <br> 09 de Abril de 2025."
 format: 
   revealjs:
     logo: "imgs/logofacape.png"
