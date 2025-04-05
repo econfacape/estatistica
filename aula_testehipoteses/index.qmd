@@ -99,6 +99,63 @@ $$
 
 - Os limites **220** e **260** são chamados de **valores críticos** do teste.
 
+## Como saber se rejeita ou não a hipótese nula?
+
+<br>
+
+Para saber se **rejeita ou não** $H_0$, se usa a **estatística de teste**:
+
+$$
+Z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{n}}
+$$
+
+Onde:
+
+- $\bar{x}$ = média amostral observada  
+- $\mu_0$ = valor da média segundo $H_0$  
+- $\sigma$ = desvio padrão populacional  
+- $n$ = tamanho da amostra
+
+---
+
+## Por que usar $\sigma / \sqrt{n}$ no denominador?
+
+- Porque o valor de $\bar{x}$ **varia de uma amostra para outra**.
+- O **erro padrão da média** mede essa variação:
+
+$$
+\text{Erro padrão da média} = \frac{\sigma}{\sqrt{n}}
+$$
+
+- Quanto maior a amostra, **menor a incerteza sobre a média**, e menor o erro.
+
+<br>
+
+### Como decidir?
+
+- Compara-se o valor de $Z$ com o **valor crítico da Normal** (ex: $1,645$ para 5% unilateral).
+- Se $Z$ > valor crítico → **rejeita $H_0$**.
+
+## Valores críticos da Normal padrão (Z)
+
+Os valores críticos de Z dependem de:
+
+- O **nível de significância** ($\alpha$)
+- O tipo de teste: **unilateral** ou **bilateral**
+
+| Nível de significância ($\alpha$) | Teste unilateral | Teste bilateral |
+|----------------------------------------|------------------|------------------|
+| 10% (0,10)                             | 1,28             | 1,64             |
+| 5% (0,05)                              | 1,645            | 1,96             |
+| 1% (0,01)                              | 2,33             | 2,58             |
+
+### Como interpretar?
+
+- **Unilateral**: usa-se $\alpha$ em apenas uma cauda da curva (ex: $H_1: \mu > \mu_0$)
+- **Bilateral**: divide-se $\alpha$ pelas duas caudas (ex: $H_1: \mu \ne \mu_0$)
+
+- Dica: Se o valor calculado de $Z$ ultrapassa o valor da tabela → **rejeita $H_0$**.
+
 ## Exemplo: Auditoria da média de reembolso de despesas
 
 - Contexto:
@@ -109,3 +166,34 @@ Foi coletada uma amostra aleatória de 25 reembolsos recentes, e a média observ
 
 Verificar, ao nível de significância de 5%, se há evidência de que o valor médio de reembolso excede $R\$$ 500,00.
 
+## Solução
+
+- As hipóteses nula e alternativa para o teste unilateral são:
+
+$$
+H_0:\mu=500 \text{ reais de reembolso despesas}
+$$
+
+$$
+H_1:\mu > 500 \text{ reais de reembolso despesas}
+$$
+
+- Estatística do teste
+
+$$
+Z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{n}} = \frac{520 - 500}{40 / \sqrt{25}} = 2,5
+$$
+
+Como o valor crítico $z_{0,05} = 1,645$, tem-se $Z = 2,5 > 1,645$ → Rejeita-se $H_0$.
+
+Conclui-se que ao nível de significância de 5%, há evidência de que a média de reembolsos excede R\$ 500,00.
+
+## Exercício: Avaliação de tempo médio de atendimento ao cliente
+
+- Contexto:
+
+Uma empresa define que o tempo médio ideal de atendimento ao cliente deve ser de 15 minutos. A gerência quer verificar se os atendentes estão atendendo mais rápido ou mais devagar do que o esperado.
+
+Foi coletada uma amostra aleatória de 36 atendimentos, e o tempo médio observado foi de 16 minutos, com desvio padrão populacional conhecido de 3 minutos.
+
+Verificar, ao nível de significância de 5%, se o tempo médio de atendimento é diferente de 15 minutos.

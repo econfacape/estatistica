@@ -422,6 +422,88 @@ H_1:\mu \ne 240 \text{ minutos}
 <li><p>Os limites <strong>220</strong> e <strong>260</strong> são chamados de <strong>valores críticos</strong> do teste.</p></li>
 </ul>
 </section>
+<section id="como-saber-se-rejeita-ou-não-a-hipótese-nula" class="slide level2">
+<h2>Como saber se rejeita ou não a hipótese nula?</h2>
+<p><br></p>
+<p>Para saber se <strong>rejeita ou não</strong> <span class="math inline">\(H_0\)</span>, se usa a <strong>estatística de teste</strong>:</p>
+<p><span class="math display">\[
+Z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{n}}
+\]</span></p>
+<p>Onde:</p>
+<ul>
+<li><span class="math inline">\(\bar{x}\)</span> = média amostral observada<br>
+</li>
+<li><span class="math inline">\(\mu_0\)</span> = valor da média segundo <span class="math inline">\(H_0\)</span><br>
+</li>
+<li><span class="math inline">\(\sigma\)</span> = desvio padrão populacional<br>
+</li>
+<li><span class="math inline">\(n\)</span> = tamanho da amostra</li>
+</ul>
+</section>
+<section id="por-que-usar-sigma-sqrtn-no-denominador" class="slide level2">
+<h2>Por que usar <span class="math inline">\(\sigma / \sqrt{n}\)</span> no denominador?</h2>
+<ul>
+<li>Porque o valor de <span class="math inline">\(\bar{x}\)</span> <strong>varia de uma amostra para outra</strong>.</li>
+<li>O <strong>erro padrão da média</strong> mede essa variação:</li>
+</ul>
+<p><span class="math display">\[
+\text{Erro padrão da média} = \frac{\sigma}{\sqrt{n}}
+\]</span></p>
+<ul>
+<li>Quanto maior a amostra, <strong>menor a incerteza sobre a média</strong>, e menor o erro.</li>
+</ul>
+<p><br></p>
+<h3 id="como-decidir">Como decidir?</h3>
+<ul>
+<li>Compara-se o valor de <span class="math inline">\(Z\)</span> com o <strong>valor crítico da Normal</strong> (ex: <span class="math inline">\(1,645\)</span> para 5% unilateral).</li>
+<li>Se <span class="math inline">\(Z\)</span> &gt; valor crítico → <strong>rejeita <span class="math inline">\(H_0\)</span></strong>.</li>
+</ul>
+</section>
+<section id="valores-críticos-da-normal-padrão-z" class="slide level2">
+<h2>Valores críticos da Normal padrão (Z)</h2>
+<p>Os valores críticos de Z dependem de:</p>
+<ul>
+<li>O <strong>nível de significância</strong> (<span class="math inline">\(\alpha\)</span>)</li>
+<li>O tipo de teste: <strong>unilateral</strong> ou <strong>bilateral</strong></li>
+</ul>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nível de significância (<span class="math inline">\(\alpha\)</span>)</th>
+<th>Teste unilateral</th>
+<th>Teste bilateral</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10% (0,10)</td>
+<td>1,28</td>
+<td>1,64</td>
+</tr>
+<tr class="even">
+<td>5% (0,05)</td>
+<td>1,645</td>
+<td>1,96</td>
+</tr>
+<tr class="odd">
+<td>1% (0,01)</td>
+<td>2,33</td>
+<td>2,58</td>
+</tr>
+</tbody>
+</table>
+<h3 id="como-interpretar">Como interpretar?</h3>
+<ul>
+<li><p><strong>Unilateral</strong>: usa-se <span class="math inline">\(\alpha\)</span> em apenas uma cauda da curva (ex: <span class="math inline">\(H_1: \mu &gt; \mu_0\)</span>)</p></li>
+<li><p><strong>Bilateral</strong>: divide-se <span class="math inline">\(\alpha\)</span> pelas duas caudas (ex: <span class="math inline">\(H_1: \mu \ne \mu_0\)</span>)</p></li>
+<li><p>Dica: Se o valor calculado de <span class="math inline">\(Z\)</span> ultrapassa o valor da tabela → <strong>rejeita <span class="math inline">\(H_0\)</span></strong>.</p></li>
+</ul>
+</section>
 <section id="exemplo-auditoria-da-média-de-reembolso-de-despesas" class="slide level2">
 <h2>Exemplo: Auditoria da média de reembolso de despesas</h2>
 <ul>
@@ -430,6 +512,35 @@ H_1:\mu \ne 240 \text{ minutos}
 <p>Uma empresa possui uma política interna que permite um reembolso médio de <span class="math inline">\(R\$\)</span> 500,00 por mês para seus representantes comerciais. O setor de auditoria desconfia que os gastos estão acima desse valor.</p>
 <p>Foi coletada uma amostra aleatória de 25 reembolsos recentes, e a média observada foi de <span class="math inline">\(R\$\)</span> 520,00, com um desvio padrão populacional de <span class="math inline">\(R\$\)</span> 40,00.</p>
 <p>Verificar, ao nível de significância de 5%, se há evidência de que o valor médio de reembolso excede <span class="math inline">\(R\$\)</span> 500,00.</p>
+</section>
+<section id="solução" class="slide level2">
+<h2>Solução</h2>
+<ul>
+<li>As hipóteses nula e alternativa para o teste unilateral são:</li>
+</ul>
+<p><span class="math display">\[
+H_0:\mu=500 \text{ reais de reembolso despesas}
+\]</span></p>
+<p><span class="math display">\[
+H_1:\mu &gt; 500 \text{ reais de reembolso despesas}
+\]</span></p>
+<ul>
+<li>Estatística do teste</li>
+</ul>
+<p><span class="math display">\[
+Z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{n}} = \frac{520 - 500}{40 / \sqrt{25}} = 2,5
+\]</span></p>
+<p>Como o valor crítico <span class="math inline">\(z_{0,05} = 1,645\)</span>, tem-se <span class="math inline">\(Z = 2,5 &gt; 1,645\)</span> → Rejeita-se <span class="math inline">\(H_0\)</span>.</p>
+<p>Conclui-se que ao nível de significância de 5%, há evidência de que a média de reembolsos excede R$ 500,00.</p>
+</section>
+<section id="exercício-avaliação-de-tempo-médio-de-atendimento-ao-cliente" class="slide level2">
+<h2>Exercício: Avaliação de tempo médio de atendimento ao cliente</h2>
+<ul>
+<li>Contexto:</li>
+</ul>
+<p>Uma empresa define que o tempo médio ideal de atendimento ao cliente deve ser de 15 minutos. A gerência quer verificar se os atendentes estão atendendo mais rápido ou mais devagar do que o esperado.</p>
+<p>Foi coletada uma amostra aleatória de 36 atendimentos, e o tempo médio observado foi de 16 minutos, com desvio padrão populacional conhecido de 3 minutos.</p>
+<p>Verificar, ao nível de significância de 5%, se o tempo médio de atendimento é diferente de 15 minutos.</p>
 <div class="quarto-auto-generated-content">
 <p><img src="imgs/logofacape.png" class="slide-logo"></p>
 <div class="footer footer-default">
