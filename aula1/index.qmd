@@ -201,8 +201,13 @@ dados = pd.DataFrame({
     'Consumo': [16.6, 18.0, 19.6, 18.4, 19.0, 18.6, 19.2, 20.4, 22.2, 21.8],
     'Renda': [21.2, 22.6, 24.8, 23.8, 23.8, 23.0, 24.2, 26.2, 28.2, 29.2]
 })
-
 ```
+
+```{python}
+# Estatisticas descritivas das variáveis
+print(dados[['Consumo', 'Renda']].describe().round(2).T)
+```
+
 
 ```{python}
 # Definindo variável independente e a dependente
@@ -253,13 +258,11 @@ dados['residuo'] = dados['Consumo'] - dados['y_estimado']
 ```
 
 ```{python}
-
 # Arredondar para 2 casas decimais
 tabela_resultado = dados[['Ano', 'Consumo', 'Renda', 'y_estimado', 'residuo']].round(2)
 
 # Exibir como tabela
 print(tabela_resultado.to_string(index=False))
-
 ```
 
 ```{python}
@@ -271,6 +274,5 @@ plt.xlabel('Renda (US$)')
 plt.ylabel('Resíduo (Consumo observado - estimado)')
 plt.grid(True)
 plt.show()
-
 ```
 
