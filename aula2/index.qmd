@@ -1,0 +1,291 @@
+---
+title: "Aula 2 - Introdução à Regressão Linear"
+author: "João Ricardo F. de Lima"
+date: "today"
+editor: source
+lang: pt
+language: 
+  toc-title-document: '<a href="https://www.facape.br/" target="_blank"><img src="https://github.com/econfacape/macroeconometria/blob/main/logofacape.jpg?raw=true" alt="Logotipo Facape" width="150"></a>'
+format: 
+  html:
+    toc: true
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+    toc-location: left
+    code-fold: false
+    embed-resources: true
+    page-layout: full
+    fig-asp: 0.618
+    fig-width: 10
+    fig-height: 5
+    fig-dpi: 100
+    fig-align: center
+    df-print: paged
+    fontsize: 13pt
+theme:
+  light: flatly
+execute:
+  echo: TRUE
+  message: false
+  warning: false
+---
+
+# Variância e Erros-padrão dos estimadores de MQO
+
+<br>
+
+Os $\beta$s estimados por MQO são variáveis aleatórias, dado que seus valores variam entre amostras. Portanto, é necessário mensurar sua variabilidade. Para isto, se usa a variância ($S^2$). 
+
+<br>		
+$$
+var(\hat{\beta_0})=S^2(\hat{\beta_0})=\frac{\hat{\sigma}^2\sum X_i^2}{n \sum x_i^2}
+$$
+<br>
+		
+com $\sum x_i^2=\sum (X-\bar X)^2$ 
+
+<br>
+
+$$
+var(\hat{\beta_1})=S^2(\hat{\beta_1})=\frac{\hat{\sigma}^2}{\sum x_i^2}
+$$
+<br>
+
+Para o Modelo de Regressão Linear, uma estimativa da variância do termo de erro $u_i$, é obtida por:
+
+<br>
+
+$$
+\hat{\sigma}^2=\frac{\sum{\hat{u_i}^2}}{n-k}=\frac{SQR}{n-k}
+$$
+<br>
+
+em que $n$=tamanho da amostra e k=número de $\beta$'s estimados.
+		
+$\hat{\sigma}=\sqrt{\hat{\sigma}^2}$ é denominado de erro padrão da regressão.
+		
+Se o  erro-padrão da variável dependente Y ($S_y$) for menor do que o erro padrão da regressão, a regressão não tem sentido, dado que os $X$'s nao tem impacto sobre $Y$. A melhor estimativa de Y, no caso de $S_y < \hat{\sigma}^2$, é a média de Y, ou seja, $\bar{Y}$.
+
+No caso do erro-padrão ($S$), se tem: 
+
+<br>
+
+$$
+S(\hat{\beta_0})=\sqrt{S^2(\hat{\beta_0})}=\sqrt{\frac{\hat{\sigma}^2\sum X_i^2}{n \sum x_i^2}}
+$$
+<br>		
+com $\sum x_i^2=\sum (X-\bar X)^2$ 
+
+$$
+S(\hat{\beta_1})=\sqrt{S^2(\hat{\beta_1})}=\sqrt{\frac{\hat{\sigma}^2}{\sum x_i^2}}
+$$
+<br>		
+	
+# Teste de Hipóteses
+
+<br>
+
+Suponha que queiramos testar se o coeficiente da regressão $\beta_k=0$. Para testar isso, deve ser usado o teste t dado por:
+
+<br>
+
+$$
+t=\frac{\hat{\beta_k}-\beta_k}{S(\hat{\beta_k)}} \sim t(n-k)gl
+$$ 
+
+<br>
+		
+Em que $S(\hat{\beta})$ é o erro padrão do $\beta$ que está sendo testado. Se $t(calc) > t(tab)$, pode-se rejeitar a hipótese nula de que $\beta_k=0$.
+
+Neste caso, se diz que o $\beta$ é significativo, ou seja, significativamente diferente de zero. Os valores de probabilidade escolhidos mais comumente são 10\%, 5\% e 1\%. 
+
+Estes valores são chamados como níveis de significância também conhecidos como erro Tipo I (probabilidade de rejeitar $H_0$, quando $H_0$ é verdadeiro). Os softwares econometricos já reportam automaticamente, não apenas os valores do teste t calculado, como os valores de probabilidade (p-value), que são os níveis exatos de significância dos valores de t. 
+
+Na prática, um p-value abaixo de 0,10 sugere que o coeficiente estimado é estatisticamente significativo.
+
+<br>
+
+# Valores estimados e resíduos
+
+<br>
+	
+Após obter as estimativas de $\beta_0$ (intercepto) e de $\beta_1$ (coeficiente de inclinação), em uma amostra específica, é possível obter o valor estimado $\hat{y}$ para cada observação "i".
+
+<br>
+
+$$
+\hat{y}_i=\hat{\beta}_0+\hat{\beta}_1x_i
+$$
+<br>
+
+Por definição, cada valor estimado está sobre a reta de regressão obtida por MQO. O resíduo associado a cada observação "$u_i$" é a diferença entre o valor observado $y_i$ e o estimado. 
+
+<br>
+		
+$$
+\hat{u}_i=y_i-\hat{y}_i
+$$
+<br>
+
+Se "$u_i$" for positivo, a reta subestima $y_i$. Se for negativo, superestima. Se $u_i=0$, o previsto é igual ao observado, mas isso raramente ocorre. 
+
+# Exemplo do modelo usando o Python
+
+```{python}
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
+# Inserindo os dados
+dados = pd.DataFrame({
+    'Ano': [1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987],
+    'Consumo': [16.6, 18.0, 19.6, 18.4, 19.0, 18.6, 19.2, 20.4, 22.2, 21.8],
+    'Renda': [21.2, 22.6, 24.8, 23.8, 23.8, 23.0, 24.2, 26.2, 28.2, 29.2]
+})
+```
+
+```{python}
+# Estimação do modelo
+modelo = smf.ols('Consumo ~ Renda', data=dados).fit()
+print(modelo.summary())
+```
+
+```{python}
+# Salvando os valores estimados
+y_hat = modelo.fittedvalues
+print(y_hat)
+```
+
+```{python}
+# Salvando os residuos estimados
+u_hat = modelo.resid
+print(u_hat)
+```
+
+# Qualidade do Ajustamento da Regressão
+
+<br>
+
+## Coeficiente de determinação - $R^2$
+
+<br>	
+	
+Depois da estimação do modelo é fundamental que se observe o quão bem a variável independente explica a variável dependente, ou seja, a qualidade de ajustamento. O Coeficiente de Determinação $(R^2)$ é uma medida da qualidade do ajustamento do modelo. Ele fornece o percentual da variação total da variável dependente que é explicada pelo conjunto das variáveis independentes.
+
+Para calcular o $R^2$, é necessário definir:
+
+a) Soma de Quadrado Total $=\sum(Y-\bar Y)^2=\sum y^2$
+b) Soma de Quadrado Explicada $=\sum (\hat Y-\bar Y)^2$ 
+c) Soma de Quadrado do Resíduo $=\sum (Y- \hat Y)^2=\sum u^2$
+
+com $SQT=SQE+SQR$.
+
+<br>
+
+<center> Tabela 1: Quadro da Análise de Variância - ANOVA </center>
+
+| Fonte     | Soma de Quadrados | G.L.  | Quadrado Médio |
+|:---------:|:-----------------:|:-----:|:--------------:|
+| Regressão | SQE               | p     | SQE/P          |
+| Resíduo   | SQR               | n-p-1 | SQR/n-p-1      |
+| Total     | SQT               | n-1   |                |
+
+<br>
+
+Considerando que $SQT=SQE+SQR$, se dividir tudo por SQT, temos:
+
+<br>
+
+$$
+\frac {SQT}{SQT}=\frac {SQE}{SQT}+ \frac {SQR}{SQT}  
+$$ 
+$$
+1=R^2+ \frac {SQR}{SQT}  
+$$
+
+$$
+R^2=1- \frac {SQR}{SQT}
+$$
+sendo o coeficiente de determinação $R^2$ definido por $\frac{SQE}{SQT}$
+
+São duas alternativas para escrever o $R^2$. O coeficiente de determinação varia entre 0 e 1. Quanto mais próximo de 1, melhor a qualidade do ajuste do modelo.
+
+O $R^2$ possui algumas desvantagens, pois é uma função crescente do número de variáveis explicativas. Quanto maior o número de regressores, maior o $R^2$.
+
+Pode ser mostrado que o $R^2$ é igual ao quadrado do coeficiente de correlação amostral entre $y_i$ e $\hat{y}_i$.
+
+Para escolher, entre 2 modelos, qual possui o melhor ajuste, quando possuem quantidades diferentes de regressores, deve-se usar o $R^2$ ajustado, denotado por $\bar R^2$.
+
+O $\bar R^2$ impõe uma "penalidade" por se adicionar mais regressores.
+
+Se $k$, o número de regressores, é $> 1$, necessariamente $\bar R^2 < R^2$ 
+
+<br>
+
+$$
+\bar R^2=1-(1-R^2) \frac {n-1}{n-k}
+$$
+<br>
+
+Tanto o $R^2$ quanto o $\bar R^2$ servem para comparar diferentes modelos que possuam a mesma variável dependente.
+
+Na equação que estamos usando como exemplo, apenas 95,7% da variação de Consumo é explicado pela Renda:
+
+$$
+\widehat{Y}=2,8576+0,6689X
+$$
+em que Y é o consumo e X é a renda.
+
+$$n=10, \quad R^2=0,957$$
+
+## Quadro da ANOVA
+
+```{python}
+# Quadro da ANOVA
+anova_table = sm.stats.anova_lm(modelo, typ=2)
+
+pd.options.display.float_format = '{:.4f}'.format
+print(anova_table)
+```
+
+<br>
+
+# Intervalo de Confiança
+
+<br>
+
+As estimativas dos coeficientes de regressão $\beta_k$ estão sujeitos à incerteza de amostragem. Portanto, nunca estimaremos exatamente o valor real desses parâmetros a partir de dados de amostra em uma aplicação empírica. No entanto, podemos construir intervalos de confiança para o intercepto e o parâmetro de inclinação.
+
+Um ntervalo de confiança de 95% para um $\beta_k$ qualquer tem duas definições equivalentes:
+
+a) O intervalo é o conjunto de valores para os quais um teste de hipótese ao nível de 5% não pode ser rejeitado.
+
+b) O intervalo tem uma probabilidade de 95% para conter o verdadeiro valor de $\beta_k$. Então em 95% de todas as amostras que podem ser retiradas, o intervalo de confiança cobrirá o verdadeiro valor de $\beta_k$.
+
+Dizemos também que o intervalo tem um nível de confiança de 95%. 
+
+Alguns softwares (como o Python), calculam um intervalo de confiança para cada coeficiente estimado da regressão.
+
+Um intervalo de confiança para um $\beta_k$ qualquer é dado por
+		
+\begin{equation} 
+Pr[\beta_k \pm t_\alpha/_2 ep(\beta_k)]=(1-\alpha)
+\tag{1}
+\end{equation}
+
+com $\alpha$ sendo o nível de significância, Pr a probabilidade e $t_\alpha/_2$ o valor da estatística t obtido na tabela t de Student e $ep(\beta_k)$ o erro padrão de $\beta_k$.
+
+```{python}
+print(modelo.summary())
+```
+
+ou 
+
+```{python}
+conf_interv = modelo.conf_int()
+print(conf_interv)
+```
+
+A partir dos dados, estima-se que cada aumento de 1 dólar na Renda aumenta o Consumo entre 0,553 e 0,785 dólares, com 95% de confiança.
