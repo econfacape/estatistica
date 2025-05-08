@@ -1,5 +1,5 @@
 ---
-title: "Introdução à Regressão Linear"
+title: "Aula 1 - Introdução à Regressão Linear"
 author: "João Ricardo F. de Lima"
 date: "today"
 editor: source
@@ -192,7 +192,7 @@ Para mais informações sobre como usar o Python em análises estatísticas, con
 
 ```{python}
 import pandas as pd
-import statsmodels.api as sm
+import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 
 # Inserindo os dados
@@ -210,14 +210,8 @@ print(dados[['Consumo', 'Renda']].describe().round(2).T)
 
 
 ```{python}
-# Definindo variável independente e a dependente
-X = sm.add_constant(dados['Renda'])  # adiciona constante (intercepto)
-y = dados['Consumo']
-
-# Estimando o modelo pelo método de MQO
-modelo = sm.OLS(y, X).fit()
+modelo = smf.ols('Consumo ~ Renda', data=dados).fit()
 print(modelo.summary())
-
 ```
 
 O resultado do modelo estimado é $\hat{Y}=2,8576 + 0,6689X$, em que $Y$ é o consumo e $X$ é a renda. 
@@ -229,7 +223,7 @@ O $\hat{\beta}$ da inclinação diz que para cada um dólar a mais na renda, o c
 ```{python}
 # Gráfico do ajuste
 plt.scatter(dados['Renda'], dados['Consumo'], color='blue', label='Dados')
-plt.plot(dados['Renda'], modelo.predict(X), color='red', label='Regressão')
+plt.plot(dados['Renda'], modelo.predict(dados), color='red', label='Regressão')
 plt.xlabel('Renda (US$)')
 plt.ylabel('Consumo (US$)')
 plt.title('Consumo vs Renda')
@@ -241,8 +235,7 @@ plt.show()
 No caso da previsão, pode-se calcular com o modelo estimado se a renda for de US$ 30, por exemplo:
 
 ```{python}
-nova_renda = 30
-consumo_previsto = modelo.predict([1, nova_renda])  # 1 é o valor da constante
+consumo_previsto = modelo.predict(pd.DataFrame({'Renda': [30]}))  # 1 é o valor da constante
 print(f"Consumo previsto para renda de $30: {consumo_previsto[0]:.2f}")
 
 ```
@@ -251,7 +244,7 @@ print(f"Consumo previsto para renda de $30: {consumo_previsto[0]:.2f}")
 
 ```{python}
 # Gerar valores previstos (y_hat)
-dados['y_estimado'] = modelo.predict(sm.add_constant(dados['Renda']))
+dados['y_estimado'] = modelo.predict(dados)
 
 # Calcular os resíduos
 dados['residuo'] = dados['Consumo'] - dados['y_estimado']
