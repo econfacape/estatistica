@@ -39,8 +39,6 @@ Regressão Linear é 'a principal ferramenta da econometria é a ferramenta esta
 
 Apesar da análise de regressão tratar da dependência de uma variável sobre outras variáveis, isto não necessariamente implica "causa". Uma relação estatística em si não pode logicamente implicar em causa. Para atribuir causalidade deve-se considerar a teoria econômica ou mesmo o senso comum.
 
-<br>
-
 # Regressão versus Correlação
 
 Relacionado mas conceitualmente muito diferente é a análise da regressão e de correlação. Na regressão é estimar ou prever o valor médio do regressando (Y) com base nos valores fixos dos regressores (X). Na correlação o objetivo é mensurar o grau de associação linear entre duas variáveis. 
@@ -186,7 +184,93 @@ $$
 \hat{y}=\hat{\beta}_{0}+\hat{\beta}_{1}x
 $$
 
-A função dada em acima é chamada de função de regressão amostral (FRA), pois ela é uma versão estimada da função de regressão populacional $E(y|x)=\beta_{0}+\beta_1x$. 
+A função dada em acima é chamada de função de regressão amostral (FRA), pois ela é uma versão estimada da função de regressão populacional $E(y|x)=\beta_{0}+\beta_1x$. Como a FRA é obtida para determinada amostra de dados, uma amostra diferente irá gerar um intercepto e um coeficiente de inclinação diferentes. 
 
-Como a FRA é obtida para determinada amostra de dados, uma amostra diferente irá gerar um intercepto e um coeficiente de inclinação diferentes. 
+# Estimação de um modelo usando o Python
+
+Para mais informações sobre como usar o Python em análises estatísticas, consulte: http://econfacape.github.io/microeconometria/python
+
+```{python}
+import pandas as pd
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+# Inserindo os dados
+dados = pd.DataFrame({
+    'Ano': [1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987],
+    'Consumo': [16.6, 18.0, 19.6, 18.4, 19.0, 18.6, 19.2, 20.4, 22.2, 21.8],
+    'Renda': [21.2, 22.6, 24.8, 23.8, 23.8, 23.0, 24.2, 26.2, 28.2, 29.2]
+})
+
+```
+
+```{python}
+# Definindo variável independente e a dependente
+X = sm.add_constant(dados['Renda'])  # adiciona constante (intercepto)
+y = dados['Consumo']
+
+# Estimando o modelo pelo método de MQO
+modelo = sm.OLS(y, X).fit()
+print(modelo.summary())
+
+```
+
+O resultado do modelo estimado é $\hat{Y}=2,8576 + 0,6689X$, em que $Y$ é o consumo e $X$ é a renda. 
+
+Matematicamente, o intercepto diz que quando a renda é zero, o consumo esperado é de aproximadamente 2,86 dólares. Contudo, não temos interesse nesta informação. 
+
+O $\hat{\beta}$ da inclinação diz que para cada um dólar a mais na renda, o consumo aumenta, em média, 0,6689 dólares.  
+
+```{python}
+# Gráfico do ajuste
+plt.scatter(dados['Renda'], dados['Consumo'], color='blue', label='Dados')
+plt.plot(dados['Renda'], modelo.predict(X), color='red', label='Regressão')
+plt.xlabel('Renda (US$)')
+plt.ylabel('Consumo (US$)')
+plt.title('Consumo vs Renda')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+No caso da previsão, pode-se calcular com o modelo estimado se a renda for de US$ 30, por exemplo:
+
+```{python}
+nova_renda = 30
+consumo_previsto = modelo.predict([1, nova_renda])  # 1 é o valor da constante
+print(f"Consumo previsto para renda de $30: {consumo_previsto[0]:.2f}")
+
+```
+
+## Análise dos resíduos
+
+```{python}
+# Gerar valores previstos (y_hat)
+dados['y_estimado'] = modelo.predict(sm.add_constant(dados['Renda']))
+
+# Calcular os resíduos
+dados['residuo'] = dados['Consumo'] - dados['y_estimado']
+```
+
+```{python}
+
+# Arredondar para 2 casas decimais
+tabela_resultado = dados[['Ano', 'Consumo', 'Renda', 'y_estimado', 'residuo']].round(2)
+
+# Exibir como tabela
+print(tabela_resultado.to_string(index=False))
+
+```
+
+```{python}
+plt.figure(figsize=(10, 6))
+plt.axhline(y=0, color='black', linestyle='--', linewidth=1)
+plt.scatter(dados['Renda'], dados['residuo'], color='blue')
+plt.title('Gráfico dos Resíduos')
+plt.xlabel('Renda (US$)')
+plt.ylabel('Resíduo (Consumo observado - estimado)')
+plt.grid(True)
+plt.show()
+
+```
 
