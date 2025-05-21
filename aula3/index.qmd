@@ -1,0 +1,180 @@
+---
+title: "Aula 3 - Introdução à Econometria"
+author: "João Ricardo F. de Lima"
+date: "today"
+editor: source
+lang: pt
+language: 
+  toc-title-document: '<a href="https://www.facape.br/" target="_blank"><img src="https://github.com/econfacape/macroeconometria/blob/main/logofacape.jpg?raw=true" alt="Logotipo Facape" width="150"></a>'
+format: 
+  html:
+    toc: true
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+    toc-location: left
+    code-fold: false
+    embed-resources: true
+    page-layout: full
+    fig-asp: 0.618
+    fig-width: 10
+    fig-height: 5
+    fig-dpi: 100
+    fig-align: center
+    df-print: paged
+    fontsize: 13pt
+theme:
+  light: flatly
+execute:
+  echo: TRUE
+  message: false
+  warning: false
+---
+
+# Incorporando não-linearidades
+
+<br>
+
+## Modelo Log-Log
+
+Considere o modelo com todas as variáveis logaritmizadas
+
+$$
+ln Y=ln \beta_0+ \beta_1 lnX +u
+$$ 
+
+com $ln\beta_0=\alpha$, tem-se:
+
+$$
+lnY= \alpha+ \beta_1 lnX + u 
+$$ 
+que é linear nos parâmetros $\alpha$ e $\beta_1$, podendo ser estimado por MQO; 
+$\beta_1$, então, é a elasticidade de Y em X, ou seja, a variação \% de Y correspondente a $\Delta \%$ em X. 
+
+<br>
+
+### Exemplo no Python
+
+```{python econ3a, message=FALSE, warning=FALSE}
+#Pacotes a serem utilizados
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
+# Inserindo os dados
+dados = pd.DataFrame({
+    'Ano': [1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987],
+    'Consumo': [16.6, 18.0, 19.6, 18.4, 19.0, 18.6, 19.2, 20.4, 22.2, 21.8],
+    'Renda': [21.2, 22.6, 24.8, 23.8, 23.8, 23.0, 24.2, 26.2, 28.2, 29.2]
+})
+
+# Estimação do modelo
+modelo1 = smf.ols('Consumo ~ Renda', data=dados).fit()
+print(modelo1.summary())
+```
+
+```{python econ3b, message=FALSE, warning=FALSE}
+# Modelo Log-log
+
+modelo2 = smf.ols('np.log(Consumo) ~ np.log(Renda)', data=dados).fit()
+print(modelo2.summary())
+```
+
+No Modelo **Lin-Lin**, a interpretação é o aumento de 1 dólar na Renda faz aumentar o Consumo em 0,6689 dólares. No Modelo **Log-Log**, como é uma elasticidade, se a experiência aumentar 1\%, o salário aumenta 0,8670\%.
+
+É preciso tomar cuidado pois não existe log de zero. No caso de se existir uma situação com Renda igual a zero, por exemplo, algum ajuste deve ser feito.
+
+<br> 
+
+## Modelo Lin-Log
+
+No modelo lin-log se está interessado em saber a variação absoluta de Y ($\Delta Y$) dada a variação \% de X. Isto é obtido usando o modelo
+
+$$
+Y=\beta_0+ \beta_1 lnX+ u
+$$ 
+denominado de lin-log. Via cálculo diferencial:
+
+$$
+\frac {\partial Y}{\partial X}=\beta_1 \frac{1}{X}
+$$
+
+$$
+\partial Y= \beta_1 \frac {\partial X}{X}
+$$
+
+<br>
+
+A variação absoluta de Y é igual ao $\beta_1$ multiplicado pela variação relativa de X; 
+
+Se $\frac {\partial X}{X}$ for multiplicado por 100, tem-se a variação absoluta de Y para uma variação \% de X; 
+
+Quando se estima este tipo de modelo pelo método dos Mínimos Quadrados Ordinários (MQO), nao se pode esquecer de dividir o $\beta_1$ por 100! Se isto não for feito, a interpretação está incorreta!
+
+<br>
+
+### Exemplo no Python
+
+```{python econ3c, message=FALSE, warning=FALSE}
+
+#Resultado da Regressão
+modelo3 = smf.ols('Consumo ~ np.log(Renda)', data=dados).fit()
+print(modelo3.summary())
+```
+
+<br>
+
+Assim, no modelo **Lin-Log** é preciso dividir o valor do $\beta_1$ por 100, ou seja, 0,169402. Se a Renda aumentar 1\%, o consumo aumenta 0,169402 dólares.
+
+<br>
+
+## Modelo Log-Linear
+
+Neste caso, o modelo a ser estimado é 
+
+$$
+ln Y_t=\beta_0 +\beta_1X + u
+$$
+
+este modelo é chamado de **Log-Linear**. Uma questão importante na análise é que é preciso depois fazer o cálculo abaixo para poder interpretar:
+
+$$
+[exp(\hat{\beta_1})-1]100
+$$
+
+### Exemplo no Python
+
+```{python econ3d, message=FALSE, warning=FALSE}
+#Resultado da Regressão Log-Lin
+
+modelo4 = smf.ols('np.log(Consumo) ~ Renda', data=dados).fit()
+print(modelo4.summary())
+```
+
+<br>
+
+Com base no modelo **Log-Lin**, um dólar a mais de Renda vai aumentar o Consumo em 3,42\%. Contudo, o valor exato precisa ser calculado. 
+
+
+### Exemplo no Python
+
+```{python econ6a, message=FALSE, warning=FALSE}
+
+#Calculo da Taxa de Crescimento Geometrica
+coefs = modelo4.params
+print((np.exp(coefs['Renda'])-1)*100)
+```
+
+## Quadro Resumo
+
+<center> Resumo das formas funcionais que envolvem logaritmos </center>
+
+| Modelo  | Regressando | Regressor | Interpretação $\beta_1$            |
+|:-------:|:-----------:|:---------:|:----------------------------------:|
+| Lin-Lin | Y           | X         | $\Delta Y=\beta_1\Delta X$         |
+| Lin-Log | Y           | log(X)    | $\Delta Y=(\beta_1/100)\%\Delta X$ |
+| Log-Lin | log(Y)      | X         | $\%\Delta Y=(100\beta_1)\Delta X$  |
+| Log-log | log(Y)      | log(X)    | $\%\Delta Y=\beta_1\%\Delta X$     |
