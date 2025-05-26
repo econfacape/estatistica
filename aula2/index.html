@@ -3124,6 +3124,13 @@ window.Quarto = {
   <li><a href="#quadro-da-anova" id="toc-quadro-da-anova" class="nav-link" data-scroll-target="#quadro-da-anova">Quadro da ANOVA</a></li>
   </ul></li>
   <li><a href="#intervalo-de-confiança" id="toc-intervalo-de-confiança" class="nav-link" data-scroll-target="#intervalo-de-confiança">Intervalo de Confiança</a></li>
+  <li><a href="#normalidade-dos-resíduos" id="toc-normalidade-dos-resíduos" class="nav-link" data-scroll-target="#normalidade-dos-resíduos">Normalidade dos Resíduos</a>
+  <ul class="collapse">
+  <li><a href="#teste-de-normalidade-dos-resíduos" id="toc-teste-de-normalidade-dos-resíduos" class="nav-link" data-scroll-target="#teste-de-normalidade-dos-resíduos">Teste de Normalidade dos Resíduos</a></li>
+  <li><a href="#teste-de-normalidade-de-jarque-bera" id="toc-teste-de-normalidade-de-jarque-bera" class="nav-link" data-scroll-target="#teste-de-normalidade-de-jarque-bera">Teste de Normalidade de Jarque-Bera</a></li>
+  <li><a href="#teste-de-normalidade-omnibus-dagostino-pearson" id="toc-teste-de-normalidade-omnibus-dagostino-pearson" class="nav-link" data-scroll-target="#teste-de-normalidade-omnibus-dagostino-pearson">Teste de Normalidade Omnibus (D’Agostino-Pearson)</a></li>
+  <li><a href="#interpretação-conjunta" id="toc-interpretação-conjunta" class="nav-link" data-scroll-target="#interpretação-conjunta">Interpretação conjunta</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -3150,7 +3157,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">8 de maio de 2025</p>
+      <p class="date">26 de maio de 2025</p>
     </div>
   </div>
   
@@ -3225,7 +3232,7 @@ t=\frac{\hat{\beta_k}-\beta_k}{S(\hat{\beta_k)}} \sim t(n-k)gl
 </section>
 <section id="exemplo-do-modelo-usando-o-python" class="level1">
 <h1>Exemplo do modelo usando o Python</h1>
-<div id="fdba8098" class="cell" data-execution_count="1">
+<div id="1db0cbc2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
@@ -3238,7 +3245,7 @@ t=\frac{\hat{\beta_k}-\beta_k}{S(\hat{\beta_k)}} \sim t(n-k)gl
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Renda&#39;</span>: [<span class="fl">21.2</span>, <span class="fl">22.6</span>, <span class="fl">24.8</span>, <span class="fl">23.8</span>, <span class="fl">23.8</span>, <span class="fl">23.0</span>, <span class="fl">24.2</span>, <span class="fl">26.2</span>, <span class="fl">28.2</span>, <span class="fl">29.2</span>]</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="ec64983a" class="cell" data-execution_count="2">
+<div id="dc4a44b9" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimação do modelo</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>modelo <span class="op">=</span> smf.ols(<span class="st">&#39;Consumo ~ Renda&#39;</span>, data<span class="op">=</span>dados).fit()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(modelo.summary())</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3248,8 +3255,8 @@ t=\frac{\hat{\beta_k}-\beta_k}{S(\hat{\beta_k)}} \sim t(n-k)gl
 Dep. Variable:                Consumo   R-squared:                       0.957
 Model:                            OLS   Adj. R-squared:                  0.951
 Method:                 Least Squares   F-statistic:                     176.7
-Date:                Thu, 08 May 2025   Prob (F-statistic):           9.79e-07
-Time:                        11:53:13   Log-Likelihood:                -3.3225
+Date:                Mon, 26 May 2025   Prob (F-statistic):           9.79e-07
+Time:                        13:15:49   Log-Likelihood:                -3.3225
 No. Observations:                  10   AIC:                             10.65
 Df Residuals:                       8   BIC:                             11.25
 Df Model:                           1                                         
@@ -3270,39 +3277,39 @@ Notes:
 [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
 </div>
 </div>
-<div id="8f087e7d" class="cell" data-execution_count="3">
+<div id="dba264e9" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Salvando os valores estimados</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y_hat <span class="op">=</span> modelo.fittedvalues</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_hat)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0   17.0388
-1   17.9753
-2   19.4469
-3   18.7780
-4   18.7780
-5   18.2428
-6   19.0455
-7   20.3834
-8   21.7212
-9   22.3901
+<pre><code>0    17.038775
+1    17.975265
+2    19.446892
+3    18.777971
+4    18.777971
+5    18.242834
+6    19.045539
+7    20.383382
+8    21.721225
+9    22.390146
 dtype: float64</code></pre>
 </div>
 </div>
-<div id="673a9b64" class="cell" data-execution_count="4">
+<div id="8307b2bc" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Salvando os residuos estimados</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>u_hat <span class="op">=</span> modelo.resid</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(u_hat)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0   -0.4388
-1    0.0247
-2    0.1531
-3   -0.3780
-4    0.2220
-5    0.3572
-6    0.1545
-7    0.0166
-8    0.4788
-9   -0.5901
+<pre><code>0   -0.438775
+1    0.024735
+2    0.153108
+3   -0.377971
+4    0.222029
+5    0.357166
+6    0.154461
+7    0.016618
+8    0.478775
+9   -0.590146
 dtype: float64</code></pre>
 </div>
 </div>
@@ -3385,7 +3392,7 @@ R^2=1- \frac {SQR}{SQT}
 </section>
 <section id="quadro-da-anova" class="level2">
 <h2 class="anchored" data-anchor-id="quadro-da-anova">Quadro da ANOVA</h2>
-<div id="0adb8393" class="cell" data-execution_count="5">
+<div id="e7a48217" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quadro da ANOVA</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>anova_table <span class="op">=</span> sm.stats.anova_lm(modelo, typ<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3402,7 +3409,6 @@ Residual  1.1379 8.0000      NaN     NaN</code></pre>
 </section>
 <section id="intervalo-de-confiança" class="level1">
 <h1>Intervalo de Confiança</h1>
-<p><br></p>
 <p>As estimativas dos coeficientes de regressão <span class="math inline">\(\beta_k\)</span> estão sujeitos à incerteza de amostragem. Portanto, nunca estimaremos exatamente o valor real desses parâmetros a partir de dados de amostra em uma aplicação empírica. No entanto, podemos construir intervalos de confiança para o intercepto e o parâmetro de inclinação.</p>
 <p>Um ntervalo de confiança de 95% para um <span class="math inline">\(\beta_k\)</span> qualquer tem duas definições equivalentes:</p>
 <ol type="a">
@@ -3417,7 +3423,7 @@ Pr[\beta_k \pm t_\alpha/_2 ep(\beta_k)]=(1-\alpha)
 \tag{1}
 \end{equation}\]</span></p>
 <p>com <span class="math inline">\(\alpha\)</span> sendo o nível de significância, Pr a probabilidade e <span class="math inline">\(t_\alpha/_2\)</span> o valor da estatística t obtido na tabela t de Student e <span class="math inline">\(ep(\beta_k)\)</span> o erro padrão de <span class="math inline">\(\beta_k\)</span>.</p>
-<div id="13148a1b" class="cell" data-execution_count="6">
+<div id="8d230882" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(modelo.summary())</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                            OLS Regression Results                            
@@ -3425,8 +3431,8 @@ Pr[\beta_k \pm t_\alpha/_2 ep(\beta_k)]=(1-\alpha)
 Dep. Variable:                Consumo   R-squared:                       0.957
 Model:                            OLS   Adj. R-squared:                  0.951
 Method:                 Least Squares   F-statistic:                     176.7
-Date:                Thu, 08 May 2025   Prob (F-statistic):           9.79e-07
-Time:                        11:53:13   Log-Likelihood:                -3.3225
+Date:                Mon, 26 May 2025   Prob (F-statistic):           9.79e-07
+Time:                        13:15:49   Log-Likelihood:                -3.3225
 No. Observations:                  10   AIC:                             10.65
 Df Residuals:                       8   BIC:                             11.25
 Df Model:                           1                                         
@@ -3448,7 +3454,7 @@ Notes:
 </div>
 </div>
 <p>ou</p>
-<div id="92551b7b" class="cell" data-execution_count="7">
+<div id="e83edad6" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>conf_interv <span class="op">=</span> modelo.conf_int()</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(conf_interv)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3458,6 +3464,144 @@ Renda      0.5529 0.7850</code></pre>
 </div>
 </div>
 <p>A partir dos dados, estima-se que cada aumento de 1 dólar na Renda aumenta o Consumo entre 0,553 e 0,785 dólares, com 95% de confiança.</p>
+<p><br></p>
+</section>
+<section id="normalidade-dos-resíduos" class="level1">
+<h1>Normalidade dos Resíduos</h1>
+<p>O Modelo Clássico de Regressão Linear assume que cada <span class="math inline">\(u_i\)</span> é distribuído Normalmente com:</p>
+<p><strong>Média Zero</strong></p>
+<p><span class="math display">\[
+E(u_i)=0
+\]</span> <strong>Variância Constante</strong></p>
+<p><span class="math display">\[
+E[u_i-E(u_i)]^2=E(u_i^2)= \sigma^2
+\]</span></p>
+<p><strong>Covariância Zero</strong></p>
+<p><span class="math display">\[
+E{[(u_i-E(u_i)][u_j-E(u_j)]}=E(u_i,u_j) =0 \quad \forall \quad i\neq j
+\]</span> <br></p>
+<p>ou dito de outra forma</p>
+<p><br></p>
+<p><span class="math display">\[
+u_i \sim N(0,\sigma^2)
+\]</span></p>
+<p><br></p>
+<p>se duas variáveis são normalmente distribuídas e não são autocorrelacionadas, são chamadas de independentes. Assim, pode-se reescrever (5) da seguinte forma:</p>
+<p><span class="math display">\[
+u_i \sim IID(0,\sigma^2)
+\]</span></p>
+<p><br></p>
+<section id="teste-de-normalidade-dos-resíduos" class="level2">
+<h2 class="anchored" data-anchor-id="teste-de-normalidade-dos-resíduos">Teste de Normalidade dos Resíduos</h2>
+<p><br></p>
+<p>Após a estimação de um modelo de regressão linear, é fundamental verificar se os <strong>resíduos seguem uma distribuição Normal</strong>, pois muitos testes estatísticos (como testes t e F) dependem dessa suposição para gerar inferência válida.</p>
+<p>Duas abordagens são recomendadas:</p>
+<ul>
+<li><strong>Visual:</strong> análise gráfica por meio de histograma, QQ-plot e densidade ajustada.</li>
+<li><strong>Formal:</strong> aplicação de testes estatísticos como o <strong>Jarque-Bera</strong> e o <strong>teste Omnibus (D’Agostino-Pearson)</strong>.</li>
+</ul>
+<p><br></p>
+</section>
+<section id="teste-de-normalidade-de-jarque-bera" class="level2">
+<h2 class="anchored" data-anchor-id="teste-de-normalidade-de-jarque-bera">Teste de Normalidade de Jarque-Bera</h2>
+<p>O <strong>teste de Jarque-Bera (JB)</strong> é um teste clássico de normalidade baseado nos dois principais momentos de uma distribuição:</p>
+<ul>
+<li><strong>Simetria (Skewness)</strong></li>
+<li><strong>Curtose (Kurtosis)</strong></li>
+</ul>
+<p>Esse teste é recomendado especialmente para <strong>amostras grandes</strong> e utiliza a seguinte estatística:</p>
+<p><span class="math display">\[  
+JB = n \left[ \frac{S^2}{6} + \frac{(K - 3)^2}{24} \right]
+\]</span></p>
+<p>onde:</p>
+<ul>
+<li><span class="math inline">\(n\)</span> = número de observações<br>
+</li>
+<li><span class="math inline">\(S\)</span> = coeficiente de simetria (idealmente próximo de 0)<br>
+</li>
+<li><span class="math inline">\(K\)</span> = coeficiente de curtose (idealmente próximo de 3 para uma normal)</li>
+</ul>
+<p>Essa estatística segue uma <strong>distribuição qui-quadrado com 2 graus de liberdade</strong>.</p>
+<ul>
+<li><strong>Hipótese nula (<span class="math inline">\(H_0\)</span>):</strong> os resíduos seguem uma distribuição Normal.</li>
+<li><strong>Hipótese alternativa (<span class="math inline">\(H_a\)</span>):</strong> os resíduos não seguem uma distribuição Normal.</li>
+</ul>
+<p>Se o <strong>p-valor for menor que 0,05</strong>, rejeita-se a hipótese nula, indicando que os resíduos <strong>não são normalmente distribuídos</strong>.</p>
+</section>
+<section id="teste-de-normalidade-omnibus-dagostino-pearson" class="level2">
+<h2 class="anchored" data-anchor-id="teste-de-normalidade-omnibus-dagostino-pearson">Teste de Normalidade Omnibus (D’Agostino-Pearson)</h2>
+<p><br></p>
+<p>O <strong>teste Omnibus</strong> é uma alternativa ao Jarque-Bera, e também avalia a <strong>normalidade dos resíduos</strong>. É chamado de “omnibus” porque considera ao mesmo tempo:</p>
+<ul>
+<li><strong>Desvio da simetria</strong></li>
+<li><strong>Desvio da curtose</strong></li>
+</ul>
+<p>É baseado na estatística combinada proposta por <strong>D’Agostino e Pearson</strong>, e também segue uma distribuição <span class="math inline">\(\chi^2\)</span> com 2 graus de liberdade.</p>
+<p>A estatística de teste é:</p>
+<p><span class="math display">\[
+K^2 = Z_1^2 + Z_2^2
+\]</span></p>
+<p>onde:</p>
+<ul>
+<li><span class="math inline">\(Z_1\)</span> é a estatística padronizada da <strong>assimetria</strong></li>
+<li><span class="math inline">\(Z_2\)</span> é a estatística padronizada da <strong>curtose</strong></li>
+</ul>
+<p>No caso da Skewness (Assimetria):</p>
+<p><span class="math display">\[
+S = \frac{1}{n} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{s} \right)^3
+\]</span></p>
+<p>A estatística padronizada é:</p>
+<p><span class="math display">\[
+Z_1 = \frac{S}{\sqrt{\text{Var}(S)}}
+\]</span></p>
+<p>A Kurtosis (Curtose) é calculada a partir de</p>
+<p><span class="math display">\[
+K = \frac{1}{n} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{s} \right)^4
+\]</span></p>
+<p>Com a estatística padronizada:</p>
+<p><span class="math display">\[
+Z_2 = \frac{K - 3}{\sqrt{\text{Var}(K)}}
+\]</span></p>
+<p>A soma dos quadrados das estatísticas padronizadas define a estatística do teste Omnibus:</p>
+<p><span class="math display">\[
+K^2 = Z_1^2 + Z_2^2
+\]</span></p>
+<ul>
+<li><p>A estatística combinada <span class="math inline">\(K^2\)</span> segue uma <strong>distribuição qui-quadrado com 2 graus de liberdade</strong></p></li>
+<li><p><strong>Hipótese nula (<span class="math inline">\(H_0\)</span>):</strong> os resíduos seguem uma distribuição Normal.</p></li>
+<li><p><strong>Hipótese alternativa (<span class="math inline">\(H_a\)</span>):</strong> os resíduos não seguem uma distribuição Normal.</p></li>
+</ul>
+<p>Esse teste é apresentado automaticamente no <code>summary()</code> dos modelos ajustados com <code>statsmodels.OLS</code> no Python, ao lado do Jarque-Bera.</p>
+</section>
+<section id="interpretação-conjunta" class="level2">
+<h2 class="anchored" data-anchor-id="interpretação-conjunta">Interpretação conjunta</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Estatística</th>
+<th>Interpretação esperada sob Normalidade</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Skew</td>
+<td>Aproximadamente 0</td>
+</tr>
+<tr class="even">
+<td>Kurtosis</td>
+<td>Aproximadamente 3</td>
+</tr>
+<tr class="odd">
+<td>Jarque-Bera p-valor</td>
+<td>&gt; 0,05 → não rejeita Normalidade</td>
+</tr>
+<tr class="even">
+<td>Omnibus p-valor</td>
+<td>&gt; 0,05 → não rejeita Normalidade</td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 
 </main>

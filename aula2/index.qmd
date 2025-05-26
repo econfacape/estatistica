@@ -254,8 +254,6 @@ print(anova_table)
 
 # Intervalo de Confiança
 
-<br>
-
 As estimativas dos coeficientes de regressão $\beta_k$ estão sujeitos à incerteza de amostragem. Portanto, nunca estimaremos exatamente o valor real desses parâmetros a partir de dados de amostra em uma aplicação empírica. No entanto, podemos construir intervalos de confiança para o intercepto e o parâmetro de inclinação.
 
 Um ntervalo de confiança de 95% para um $\beta_k$ qualquer tem duas definições equivalentes:
@@ -289,3 +287,160 @@ print(conf_interv)
 ```
 
 A partir dos dados, estima-se que cada aumento de 1 dólar na Renda aumenta o Consumo entre 0,553 e 0,785 dólares, com 95% de confiança.
+
+<br>
+
+# Normalidade dos Resíduos
+
+O Modelo Clássico de Regressão Linear assume que cada $u_i$ é distribuído Normalmente com: 
+
+**Média Zero**
+
+$$
+E(u_i)=0
+$$
+**Variância Constante** 
+
+$$
+E[u_i-E(u_i)]^2=E(u_i^2)= \sigma^2
+$$
+
+**Covariância Zero** 
+
+$$
+E{[(u_i-E(u_i)][u_j-E(u_j)]}=E(u_i,u_j) =0 \quad \forall \quad i\neq j
+$$
+<br>
+
+ou dito de outra forma
+
+<br>
+
+$$
+u_i \sim N(0,\sigma^2)
+$$
+
+<br>
+
+se duas variáveis são normalmente distribuídas e não são autocorrelacionadas, são chamadas de independentes. Assim, pode-se reescrever (5) da seguinte forma: 
+ 
+$$ 
+ u_i \sim IID(0,\sigma^2)
+$$
+
+<br>
+
+## Teste de Normalidade dos Resíduos
+
+<br>
+
+Após a estimação de um modelo de regressão linear, é fundamental verificar se os **resíduos seguem uma distribuição Normal**, pois muitos testes estatísticos (como testes t e F) dependem dessa suposição para gerar inferência válida.
+
+Duas abordagens são recomendadas:
+
+- **Visual:** análise gráfica por meio de histograma, QQ-plot e densidade ajustada.
+- **Formal:** aplicação de testes estatísticos como o **Jarque-Bera** e o **teste Omnibus (D’Agostino-Pearson)**.
+
+<br>
+
+## Teste de Normalidade de Jarque-Bera
+
+
+O **teste de Jarque-Bera (JB)** é um teste clássico de normalidade baseado nos dois principais momentos de uma distribuição:
+
+- **Simetria (Skewness)**
+- **Curtose (Kurtosis)**
+
+Esse teste é recomendado especialmente para **amostras grandes** e utiliza a seguinte estatística:
+
+$$  
+JB = n \left[ \frac{S^2}{6} + \frac{(K - 3)^2}{24} \right]
+$$
+
+onde:
+
+- $n$ = número de observações  
+- $S$ = coeficiente de simetria (idealmente próximo de 0)  
+- $K$ = coeficiente de curtose (idealmente próximo de 3 para uma normal)
+
+Essa estatística segue uma **distribuição qui-quadrado com 2 graus de liberdade**.
+
+- **Hipótese nula ($H_0$):** os resíduos seguem uma distribuição Normal.
+- **Hipótese alternativa ($H_a$):** os resíduos não seguem uma distribuição Normal.
+
+Se o **p-valor for menor que 0,05**, rejeita-se a hipótese nula, indicando que os resíduos **não são normalmente distribuídos**.
+
+
+## Teste de Normalidade Omnibus (D’Agostino-Pearson)
+
+<br>
+
+O **teste Omnibus** é uma alternativa ao Jarque-Bera, e também avalia a **normalidade dos resíduos**. É chamado de "omnibus" porque considera ao mesmo tempo:
+
+- **Desvio da simetria**
+- **Desvio da curtose**
+
+É baseado na estatística combinada proposta por **D’Agostino e Pearson**, e também segue uma distribuição $\chi^2$ com 2 graus de liberdade.
+
+A estatística de teste é:
+
+$$
+K^2 = Z_1^2 + Z_2^2
+$$
+
+onde:
+
+- $Z_1$ é a estatística padronizada da **assimetria**
+- $Z_2$ é a estatística padronizada da **curtose**
+
+No caso da Skewness (Assimetria):
+
+$$
+S = \frac{1}{n} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{s} \right)^3
+$$
+
+A estatística padronizada é:
+
+$$
+Z_1 = \frac{S}{\sqrt{\text{Var}(S)}}
+$$
+
+A Kurtosis (Curtose) é calculada a partir de
+
+$$
+K = \frac{1}{n} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{s} \right)^4
+$$
+
+Com a estatística padronizada:
+
+$$
+Z_2 = \frac{K - 3}{\sqrt{\text{Var}(K)}}
+$$
+
+A soma dos quadrados das estatísticas padronizadas define a estatística do teste Omnibus:
+
+$$
+K^2 = Z_1^2 + Z_2^2
+$$
+
+- A estatística combinada $K^2$ segue uma **distribuição qui-quadrado com 2 graus de liberdade**
+
+
+- **Hipótese nula ($H_0$):** os resíduos seguem uma distribuição Normal.
+- **Hipótese alternativa ($H_a$):** os resíduos não seguem uma distribuição Normal.
+
+Esse teste é apresentado automaticamente no `summary()` dos modelos ajustados com `statsmodels.OLS` no Python, ao lado do Jarque-Bera.
+
+## Interpretação conjunta
+
+| Estatística       | Interpretação esperada sob Normalidade |
+|-------------------|----------------------------------------|
+| Skew              | Aproximadamente 0                     |
+| Kurtosis          | Aproximadamente 3                     |
+| Jarque-Bera p-valor | > 0,05 → não rejeita Normalidade     |
+| Omnibus p-valor     | > 0,05 → não rejeita Normalidade     |
+
+
+
+
+
