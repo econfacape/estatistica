@@ -1,0 +1,187 @@
+---
+title: "Aula 4 - Séries Temporais"
+author: "João Ricardo F. de Lima"
+date: "today"
+editor: source
+lang: pt
+language: 
+  toc-title-document: '<a href="https://www.facape.br/" target="_blank"><img src="https://github.com/econfacape/macroeconometria/blob/main/logofacape.jpg?raw=true" alt="Logotipo Facape" width="150"></a>'
+format: 
+  html:
+    toc: true
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+    toc-location: left
+    code-fold: false
+    embed-resources: true
+    page-layout: full
+    fig-asp: 0.618
+    fig-width: 10
+    fig-height: 5
+    fig-dpi: 100
+    fig-align: center
+    df-print: paged
+    fontsize: 13pt
+theme:
+  light: flatly
+execute:
+  echo: TRUE
+  message: false
+  warning: false
+---
+
+# Estimação da Tendência e da Taxa de Crescimento
+
+<br>
+
+### Análise no Python
+
+```{python aula1}
+import pandas as pd
+import numpy as np
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
+# Inserindo os dados
+dados = pd.DataFrame({
+    'ano': list(range(2000, 2025)),
+    'toneladas': [14330, 20645, 26346, 37585, 28815,
+    50787, 62281, 79081, 82227, 54560,
+    60690, 59361, 52016, 43181, 28335,
+    34385, 30813, 44493, 39842, 45054,
+    49228, 76609, 52561, 73212, 58858],
+    'tendencia': range(1,26)
+})
+
+# Gráfico de barras
+plt.figure(figsize=(10, 6))
+# Mostrar os anos de 2 em 2 no eixo X
+anos_exibir = list(range(2000, 2025, 2))
+plt.bar(dados['ano'], dados['toneladas'], color='purple')
+plt.title('Volume Exportado de uva (2000–2024)', fontsize=14)
+plt.xlabel('Ano')
+plt.ylabel('Toneladas')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.xticks(rotation=25)
+plt.xticks(anos_exibir)
+plt.tight_layout()
+plt.show()
+```
+
+```{python aula2}
+# Estimação do modelo
+modelo1 = smf.ols('toneladas ~ tendencia', data=dados).fit()
+print(modelo1.summary())
+```
+
+
+```{python aula3}
+# Calcular valores ajustados em nível (retransformando da escala log)
+dados['ajustado'] = modelo1.fittedvalues
+
+# Plot
+plt.figure(figsize=(10, 6))
+plt.plot(dados['ano'], dados['toneladas'], label='Observado', marker='o')
+plt.plot(dados['ano'], dados['ajustado'], label='Tendência estimada', linestyle='--')
+plt.title('Volume Exportado de Uvas (toneladas) e Tendência Estimada')
+plt.xlabel('Ano')
+plt.ylabel('Toneladas')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+```
+
+### Tendência Cúbica
+
+```{python aula4}
+modelo_cubico = smf.ols('toneladas ~ tendencia + I(tendencia**2) + I(tendencia**3)', data=dados).fit()
+
+print(modelo_cubico.summary())
+```
+
+```{python aula5}
+dados['ajustado_cubico'] = modelo_cubico.fittedvalues
+
+# Plot
+plt.figure(figsize=(10, 6))
+plt.plot(dados['ano'], dados['toneladas'], label='Observado', marker='o')
+plt.plot(dados['ano'], dados['ajustado_cubico'], label='Tendência estimada', linestyle='--')
+plt.title('Volume Exportado de Uvas (toneladas) e Tendência Estimada')
+plt.xlabel('Ano')
+plt.ylabel('Toneladas')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+```
+
+
+## Estimação de Taxa de Crescimento
+
+### Análise no Python
+
+```{python aula7}
+# Estimação do modelo
+modelo2 = smf.ols('np.log(toneladas) ~ tendencia', data=dados).fit()
+print(modelo2.summary())
+```
+
+### Cálculo da Taxa de Crescimento Geométrica
+
+```{python aula8}
+# Coeficiente da tendência
+beta1 = modelo2.params['tendencia']
+
+# Cálculo da taxa geométrica de crescimento em %
+taxa_geom_percentual = (np.exp(beta1) - 1) * 100
+
+# Exibir a frase com o valor formatado
+print(f"O valor calculado da taxa geométrica de crescimento das exportações de uva entre 2000 e 2024 é: {taxa_geom_percentual:.2f}% ao ano.")
+```
+
+
+### Taxa de crescimento ao longo do tempo
+
+```{python aula9}
+# Estimação do modelo cúbico log-linear
+modelo_log_cubico = smf.ols('np.log(toneladas) ~ tendencia + I(tendencia**2) + I(tendencia**3)', data=dados).fit()
+print(modelo_log_cubico.summary())
+
+print(modelo_log_cubico.params.index)
+```
+
+```{python aula10}
+# Coeficientes
+b1 = modelo_log_cubico.params['tendencia']
+b2 = modelo_log_cubico.params['I(tendencia ** 2)']
+b3 = modelo_log_cubico.params['I(tendencia ** 3)']
+
+# Cálculo da taxa de crescimento ao longo do tempo
+dados['taxa_crescimento'] = (b1 + 2 * b2 * dados['tendencia'] + 3 * b3 * (dados['tendencia']**2)) * 100  # em %
+
+# Listar taxas de crescimento estimadas
+for ano, taxa in zip(dados['ano'], dados['taxa_crescimento']):
+    print(f"Ano {ano}: taxa de crescimento estimada = {taxa:.2f}% ao ano")
+```
+
+
+```{python aula11}
+# Plot da taxa de crescimento ao longo do tempo
+plt.figure(figsize=(10, 6))
+plt.plot(dados['ano'], dados['taxa_crescimento'], marker='o', color='darkgreen')
+plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+plt.title('Taxa de Crescimento Estimada da Exportação de Uvas (Modelo Log-Cúbico)', fontsize=13)
+plt.xlabel('Ano')
+plt.ylabel('Taxa de Crescimento (%)')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+```
+
+A taxa de crescimento anual das exportações de uva variou ao longo do tempo entre 2000 e 2024.
+
+No início dos anos 2000, as exportações cresciam a mais de 40% ao ano, mas essa taxa caiu continuamente, tornando-se negativa entre 2011 e 2016, indicando retração no setor.
+
+A partir de 2017, a taxa voltou a crescer e atingiu cerca de 28% ao ano em 2024.
