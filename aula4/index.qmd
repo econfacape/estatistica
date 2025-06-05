@@ -1,0 +1,200 @@
+---
+title: "Aula 4 - Séries Temporais"
+author: "João Ricardo F. de Lima"
+date: "today"
+editor: source
+lang: pt
+language: 
+  toc-title-document: '<a href="https://www.facape.br/" target="_blank"><img src="https://github.com/econfacape/macroeconometria/blob/main/logofacape.jpg?raw=true" alt="Logotipo Facape" width="150"></a>'
+format: 
+  html:
+    toc: true
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+    toc-location: left
+    code-fold: false
+    embed-resources: true
+    page-layout: full
+    fig-asp: 0.618
+    fig-width: 10
+    fig-height: 5
+    fig-dpi: 100
+    fig-align: center
+    df-print: paged
+    fontsize: 13pt
+theme:
+  light: flatly
+execute:
+  echo: TRUE
+  message: false
+  warning: false
+---
+
+# Estimação da Tendência e da Taxa de Crescimento
+
+<br>
+
+## Estimação de Tendências Determinística
+
+
+Uma **Série Temporal** é qualquer conjunto de dados ordenados no tempo, com cada valor associado a um instante de tempo.
+
+O enfoque clássico do estudo de séries temporais busca decompor a série em quatro componentes:  
+  
+1) Tendencia (T): Componente da série que possui movimento contínuo, para cima ou baixo, por um período longo de tempo;  
+
+2) Ciclo (C): Componente que apresenta movimento oscilatório ao longo da tendência durante um período de tempo maior do que um ano, nao necessariamente regular;  
+
+3) Sazonalidade: Componente que apresenta movimento oscilatório que ocorre com regularidade em subperíodos de um período de tempo fixo;
+
+4) Volatilidade (I): Componente aleatório.
+
+
+A **Tendência determinística** de uma série temporal é representada por mudanças no nível médio da série que ocorrem de forma previsível, em função do tempo.
+
+Existem vários métodos para estimar a tendência determinística $T_t$. Os mais utilizados são os métodos de regressão e os de média móvel.
+ 
+No método de regressão, ajusta-se $Y_t$ como uma função do tempo:
+
+$$
+Y_t=f(t)+\epsilon_t
+$$ 
+
+em que f(t) pode assumir a forma de um polinômio de qualquer grau ou exponencial. Tem-se as seguintes possibilidades:
+
+
+a) Tendência Linear: $Y_t=\beta_0+\beta_1t+\epsilon_t$ 
+ 
+b) Tendência Quadrática: $Y_t=\beta_0+\beta_1t+\beta_2t^2+\epsilon_t$ 
+ 
+c) Polinômio de grau k: $Y_t=\beta_0+\beta_1t+\beta_2t^2+\dots+\beta_kt^k+\epsilon_t$ 
+ 
+d) Exponencial: $Y_t=Ae^{\beta t}\epsilon_t$ 
+ 
+a variável explicativa nestes modelos é o tempo (t) que assume os valores t=1,2,3,...T, chamada de variável tendência (trend).
+
+<br>
+
+### Análise no Python
+
+```{python aula1}
+import pandas as pd
+import numpy as np
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
+# Inserindo os dados
+dados = pd.DataFrame({
+    'ano': list(range(2004, 2025)),
+    'toneladas': [104423, 114537, 115387, 116020, 133703,
+    110194, 124671, 126124, 126917, 121943,
+    133033, 156314, 154211, 179601, 170463,
+    215834, 243226, 272560, 231364, 266098,
+    258305],
+    'tendencia': range(1,22)
+})
+
+# Gráfico de barras
+plt.figure(figsize=(10, 6))
+# Mostrar os anos de 2 em 2 no eixo X
+anos_exibir = list(range(2004, 2025, 2))
+plt.bar(dados['ano'], dados['toneladas'], color='gold')
+plt.title('Volume Exportado de Manga (2004–2024)', fontsize=14)
+plt.xlabel('Ano')
+plt.ylabel('Toneladas')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.xticks(rotation=25)
+plt.xticks(anos_exibir)
+plt.tight_layout()
+plt.show()
+```
+
+```{python aula2}
+# Estimação do modelo
+modelo1 = smf.ols('toneladas ~ tendencia', data=dados).fit()
+print(modelo1.summary())
+```
+
+
+## Estimação de Taxa de Crescimento
+
+<br>
+
+Como calcular Taxa de Crescimento? Sempre estamos interessados em conhecer taxas de crescimento: a) Lucro; b) Custos; c) População; d) Emprego; e) Exportações, etc.
+
+Para isto, usando a fórmula
+
+$$ 
+Y_t=Y_0{(1+r)^t}
+$$
+
+$y_t$ é a variável a qual se deseja calcular a taxa de crescimento; $y_0$ é o valor inicial da variável; t é o tempo; r é a taxa de crescimento ao longo do tempo de Y; 
+
+Tomando o logaritmo da equação, tem-se 
+		
+$$
+ln Y_t=ln Y_0 +tln(1+r)
+$$
+
+denominando
+
+$\beta_0 = ln Y_0$   
+
+e 
+
+$\beta_1 = ln (1+r)$, reescreve-se a equação para;  
+
+$$
+ln Y_t=\beta_0 +\beta_1t
+$$
+
+na forma de modelo de regressão
+
+$$
+ln Y_t=\beta_0 +\beta_1t +u
+$$
+
+com t assumindo os valores 1,2,3, etc..
+
+Para se calcular a taxa de crescimento ao longo do tempo, deve-se aplicar a fórmula 
+
+$$
+[exp(\hat{\beta_1})-1]100
+$$
+
+### Análise no Python
+
+```{python aula3}
+import pandas as pd
+import numpy as np
+import statsmodels.formula.api as smf
+
+# Inserindo os dados
+dados = pd.DataFrame({
+    'ano': list(range(2004, 2025)),
+    'toneladas': [104423, 114537, 115387, 116020, 133703,
+    110194, 124671, 126124, 126917, 121943,
+    133033, 156314, 154211, 179601, 170463,
+    215834, 243226, 272560, 231364, 266098,
+    258305],
+    'tendencia': range(1,22)
+})
+
+# Estimação do modelo
+modelo2 = smf.ols('np.log(toneladas) ~ tendencia', data=dados).fit()
+print(modelo2.summary())
+```
+
+### Cálculo da Taxa de Crescimento Geométrica
+
+```{python}
+# Coeficiente da tendência
+beta1 = modelo2.params['tendencia']
+
+# Cálculo da taxa geométrica de crescimento em %
+taxa_geom_percentual = (np.exp(beta1) - 1) * 100
+
+# Exibir a frase com o valor formatado
+print(f"O valor calculado da taxa geométrica de crescimento é: {taxa_geom_percentual:.2f}% ao ano.")
+```
